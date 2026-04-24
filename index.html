@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pinelopi Nestoroudi — Technical Portfolio</title>
+  <meta name="description"
+    content="Technical portfolio for Pinelopi Nestoroudi, a Senior Operations & Business Intelligence Consultant building practical tools and business-facing applications across Python, SQL, Spring Boot, and VBA." />
+  <style>
+    :root {
+      --bg: #f6fbfb;
+      --surface: #ffffff;
+      --surface-2: #eef8f7;
+      --line: #d7e8e6;
+      --line-strong: #b7d6d1;
+      --text: #11272a;
+      --muted: #4e6b70;
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --accent-soft: rgba(15, 118, 110, 0.10);
+      --glow-soft: rgba(20, 184, 166, 0.06);
+      --shadow: 0 14px 34px rgba(17, 39, 42, 0.08);
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --radius: 20px;
+      --radius-lg: 24px;
+      --radius-sm: 14px;
+      --max: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 34%),
+        radial-gradient(circle at 100% 0%, rgba(17, 94, 89, 0.06), transparent 24%),
+        linear-gradient(180deg, #fbfefe 0%, var(--bg) 100%);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(183, 214, 209, 0.72);
+      backdrop-filter: blur(12px);
+      background: rgba(246, 251, 251, 0.80);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+      color: #fff;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a {
+      padding: 8px 0;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .section {
+      position: relative;
+      padding: 72px 0;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top center, var(--glow-soft), transparent 46%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    #about.section::before,
+    #projects.section::before,
+    #skills.section::before,
+    #contact.section::before {
+      opacity: 1;
+    }
+
+    .hero {
+      padding: 52px 0 44px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.84fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .hero-main {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.04), rgba(255, 255, 255, 0) 40%),
+        var(--surface);
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: auto -30px -30px auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15, 118, 110, 0.12), rgba(15, 118, 110, 0) 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.2rem, 4.2vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      max-width: 12ch;
+    }
+
+    .hero-copy {
+      max-width: 64ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0 0 22px;
+    }
+
+    .hero-emphasis {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 17px;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(15, 118, 110, 0.18);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .point {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px dashed var(--line-strong);
+      background: rgba(238, 248, 247, 0.7);
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .mini-card,
+    .summary-card {
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+    }
+
+    .mini-kicker {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .mini-main {
+      font-size: 1.24rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .mini-copy,
+    .muted {
+      color: var(--muted);
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-lead {
+      margin: 0 0 28px;
+      max-width: 74ch;
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .about-grid,
+    .projects-grid,
+    .skills-grid,
+    .contact-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .about-grid {
+      grid-template-columns: 1.45fr 0.95fr;
+    }
+
+    .projects-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .contact-grid .contact-panel {
+      max-width: 760px;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+
+    .card-title {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card-label {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .bullet-list,
+    .tag-list,
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .bullet-list li,
+    .contact-list li {
+      position: relative;
+      padding-left: 1.35rem;
+      margin-bottom: 0.95rem;
+      line-height: 1.7;
+      color: #475569;
+    }
+
+    .bullet-list li:last-child,
+    .contact-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .bullet-list li::before,
+    .contact-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #14b8a6, #0f766e);
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+    }
+
+    /* About */
+    #about .section-title {
+      margin-bottom: 0.75rem;
+    }
+
+    #about .section-lead {
+      max-width: 700px;
+      margin: 0 0 2.2rem;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: #4b5563;
+    }
+
+    #about .card,
+    #about .stat {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(13, 148, 136, 0.12);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(8px);
+    }
+
+    #about .card {
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1.6rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    #about .card:hover,
+    #about .stat:hover {
+      transform: translateY(-2px);
+      border-color: rgba(13, 148, 136, 0.24);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.09);
+    }
+
+    #about .card-title {
+      margin-bottom: 1rem;
+      font-size: 1.35rem;
+      line-height: 1.3;
+    }
+
+    .about-stats {
+      display: grid;
+      gap: 1rem;
+    }
+
+    #about .stat {
+      padding: 1.15rem 1.15rem 1.05rem;
+      border-radius: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    #about .stat-number {
+      margin-bottom: 0.4rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+
+    #about .stat div:last-child {
+      color: #475569;
+      line-height: 1.65;
+      font-size: 0.96rem;
+    }
+
+    #about .bullet-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #about .bullet-list li {
+      position: relative;
+      padding-left: 1.35rem;
+      margin-bottom: 0.95rem;
+      line-height: 1.7;
+      color: #334155;
+    }
+
+    #about .bullet-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    #about .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #14b8a6, #0f766e);
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+    }
+
+    /* Projects */
+    .projects-head {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .projects-head .section-lead {
+      margin-bottom: 0;
+      max-width: 68ch;
+    }
+
+    .projects-side-note {
+      justify-self: end;
+      max-width: 360px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(20, 184, 166, 0.10) 0%, rgba(20, 184, 166, 0.04) 100%);
+      border: 1px solid rgba(15, 118, 110, 0.14);
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+
+    .projects-side-note strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .project-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .project-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(20, 184, 166, 0.8), rgba(15, 118, 110, 0.45));
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: 0 18px 36px rgba(17, 39, 42, 0.10);
+    }
+
+    .project-card:hover::after {
+      opacity: 1;
+    }
+
+    .project-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .project-title {
+      margin: 0;
+      font-size: 1.16rem;
+      letter-spacing: -0.02em;
+    }
+
+    .project-status {
+      white-space: nowrap;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .project-copy {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .project-summary {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.68;
+      font-size: 0.98rem;
+    }
+
+    .project-stack {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+
+    .project-stack strong {
+      color: var(--text);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+
+    .btn-inline {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      font-weight: 700;
+      transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+    }
+
+    .btn-inline:hover,
+    .btn-inline:focus-visible {
+      border-color: var(--line-strong);
+      background: var(--surface-2);
+      transform: translateY(-1px);
+    }
+
+    .btn-inline.btn-accent {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-inline.btn-accent:hover,
+    .btn-inline.btn-accent:focus-visible {
+      background: var(--accent-strong);
+      color: #fff;
+    }
+
+    .more-projects {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 251, 251, 0.96) 100%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .more-projects summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .more-projects summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .more-projects summary::after {
+      content: "+";
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 1rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .more-projects[open] summary::after {
+      content: "−";
+    }
+
+    .more-projects summary span {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .additional-projects {
+      padding: 0 22px 22px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .mini-project {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .mini-project h4 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .mini-project p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 0.94rem;
+    }
+
+    /* Skills */
+    .skills-grid-v2 {
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .skill-block {
+      display: grid;
+      gap: 16px;
+    }
+
+    .skill-block-v2 {
+      position: relative;
+      z-index: 1;
+      gap: 14px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(15, 118, 110, 0.12);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+      backdrop-filter: blur(8px);
+    }
+
+    .skill-block-v2 .card-title {
+      margin-top: -4px;
+      margin-bottom: 4px;
+    }
+
+    .skill-card {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #fbfefe 100%);
+    }
+
+    .skill-card h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .skill-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.68;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .skill-tags span {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.46rem 0.78rem;
+      border-radius: 999px;
+      background: rgba(13, 148, 136, 0.08);
+      border: 1px solid rgba(13, 148, 136, 0.12);
+      color: var(--accent);
+      font-size: 0.92rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .ways-card {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(15, 118, 110, 0.12);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+      background: linear-gradient(135deg, rgba(247, 254, 253, 0.96), rgba(255, 255, 255, 0.94));
+    }
+
+    .ways-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .way-point {
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .callout {
+      padding: 20px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(255, 255, 255, 0.96));
+      border: 1px solid var(--line);
+      margin-top: 18px;
+    }
+
+    .callout strong {
+      color: var(--accent-strong);
+    }
+
+    /* Contact */
+    .contact-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    #contact .card {
+      border-radius: var(--radius-lg);
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 18px 0 44px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+
+      .hero-grid,
+      .about-grid,
+      .projects-grid,
+      .skills-grid,
+      .contact-grid,
+      .projects-head {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-side-note {
+        justify-self: start;
+        max-width: 100%;
+      }
+
+      .hero-points,
+      .ways-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        max-width: 100%;
+      }
+
+      #about .section-lead {
+        max-width: 100%;
+        margin-bottom: 1.8rem;
+      }
+
+      .additional-projects {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .hero-main,
+      .hero-side,
+      .card {
+        padding: 22px;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+
+      .hero {
+        padding: 34px 0 28px;
+      }
+
+      .cta-row,
+      .contact-actions,
+      .project-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+
+      #about .card,
+      #about .stat,
+      .skill-block-v2,
+      .ways-card,
+      #contact .card {
+        border-radius: 18px;
+      }
+
+      #about .card {
+        padding: 1.35rem 1.1rem;
+      }
+
+      #about .stat {
+        padding: 1rem;
+      }
+
+      #about .card-title {
+        font-size: 1.2rem;
+      }
+
+      #about .section-lead,
+      .section-lead {
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .more-projects summary {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Go to top">
+        <span class="brand-mark">PN</span>
+        <span>Pinelopi Nestoroudi</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="project-card" href="#about">About</a>
+        <a class="project-card" href="#projects">Projects</a>
+        <a class="project-card" href="#skills">Skills</a>
+        <a class="project-card" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="panel hero-main project-card">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Bridge between business and tech · Process-led tool design
+          </div>
+          <h1>From business needs to working tools.</h1>
+          <p class="hero-copy">
+            I am an Applied Informatics postgraduate and <span class="hero-emphasis">Senior Operations &amp; Business
+              Intelligence Consultant with 12+ years of professional experience in business environments</span>. Over
+            the last few years, I have independently designed and built internal tools and applications across Python,
+            SQL, Spring Boot, and VBA — taking ownership from analysis and logic design to implementation, testing, and
+            delivery.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#projects">View Projects</a>
+            <a class="btn btn-primary" href="cv.pdf" download>Download CV</a>
+            <a class="btn btn-primary" href="#contact">Contact</a>
+          </div>
+          <div class="hero-points">
+            <div class="point project-card">Bridges business context, stakeholder needs, and technical execution.</div>
+            <div class="point project-card">Builds practical tools, evaluation logic, and workflow-oriented
+              applications.</div>
+            <div class="point project-card">Works across structure, impact analysis, implementation, testing, and
+              refinement.</div>
+          </div>
+        </div>
+
+        <aside class="panel hero-side" aria-label="Profile summary">
+          <div class="summary-card project-card">
+            <div class="mini-kicker">Current role</div>
+            <div class="mini-main">Senior Operations &amp; Business Intelligence Consultant</div>
+            <div class="mini-copy">Working close to stakeholders while independently shaping requirements, logic, and
+              usable internal solutions.</div>
+          </div>
+          <div class="mini-card project-card">
+            <div class="mini-kicker">Technical focus</div>
+            <div class="mini-main">Python · SQL · Spring Boot · VBA</div>
+            <div class="mini-copy">Applied to automation, workflow support, evaluation tooling, and web-based internal
+              applications.</div>
+          </div>
+          <div class="mini-card project-card">
+            <div class="mini-kicker">Selected evidence</div>
+            <div class="mini-main">MSc thesis on BPMN / DMN model evaluation</div>
+            <div class="mini-copy">Academic depth combined with self-driven build work and real operational delivery in
+              business environments.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <p class="section-lead">
+          My work combines stakeholder understanding, process thinking, and hands-on implementation. With 12+ years of
+          professional experience in operational and business-facing environments, I translate real business needs into
+          structured solutions and build practical tools that improve workflows, visibility, and decision-making.
+        </p>
+
+        <div class="about-grid">
+          <div class="card project-card">
+            <span class="card-label">Professional narrative</span>
+            <h3 class="card-title">What I bring to a team</h3>
+            <ul class="bullet-list">
+              <li>Bridge business needs and technical execution by turning stakeholder requirements into structured,
+                usable solutions.</li>
+              <li>Contribute across the full solution cycle: requirement discovery, logic design, implementation,
+                testing, and refinement.</li>
+              <li>Recognize gaps, edge cases, and downstream impacts early, not only the requirements explicitly
+                requested.</li>
+              <li>Build practical internal tools, dashboards, automations, and workflow-support solutions across Python,
+                SQL, Spring Boot, HTML, and VBA.</li>
+              <li>Bring ownership, curiosity, and fast learning to environments where software, tools, and platforms
+                evolve through real business needs.</li>
+            </ul>
+          </div>
+
+          <div class="about-stats">
+            <div class="stat project-card">
+              <div class="stat-number">12+ years</div>
+              <div>Professional experience across operations, analysis, reporting, and business-facing environments.
+              </div>
+            </div>
+            <div class="stat project-card">
+              <div class="stat-number">End-to-end delivery</div>
+              <div>From stakeholder understanding and business logic to implementation, testing, and user-ready output.
+              </div>
+            </div>
+            <div class="stat project-card">
+              <div class="stat-number">Tool builder mindset</div>
+              <div>Focused on internal tools, automation, data workflows, dashboards, and structured evaluation
+                solutions.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="projects-head">
+          <div>
+            <h2 class="section-title">Selected Projects</h2>
+            <p class="section-lead">
+              Representative work across tools and applications, process evaluation, internal analytics, automation, API
+              integration, and database design. </p>
+          </div>
+        </div>
+
+        <div class="projects-grid">
+          <article class="card project-card">
+            <div class="project-top">
+              <h3 class="project-title">BPMN / DMN Model Evaluation Tool</h3>
+              <span class="project-status">Live demo</span>
+            </div>
+            <p class="project-copy">Evaluation and comparison of BPMN, DMN, and combined BPMN+DMN models.</p>
+            <p class="project-summary">
+              Web application developed as an academic prototype for model analysis, quality-oriented metrics,
+              comparative evaluation, and BPMN–DMN integration mapping. Deployed on Render and structured for multi-user
+              session-based use.
+            </p>
+            <div class="project-stack"><strong>Stack:</strong> Python, Flask, Jinja, Bootstrap, JavaScript, BPMN-JS,
+              DMN-JS</div>
+            <div class="tag-list">
+              <span class="tag">Process modeling</span>
+              <span class="tag">Evaluation logic</span>
+              <span class="tag">Comparative analysis</span>
+            </div>
+            <div class="project-actions">
+              <a class="btn-inline btn-accent" href="https://bpmn-dmn-evaluation-tool.onrender.com/" target="_blank"
+                rel="noreferrer">Live Demo</a>
+              <a class="btn-inline btn-accent" href="bpmn_dmn_project_page.html">Technical Overview</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <div class="project-top">
+              <h3 class="project-title">Revenue Performance Dashboard</h3>
+              <span class="project-status">Internal platform</span>
+            </div>
+            <p class="project-copy">Internal analytics platform with user-level access control.</p>
+            <p class="project-summary">
+              Built to replace multiple static per-user Excel files with one interactive dashboard that supports
+              controlled visibility, dynamic filtering, and admin validation workflows. Designed for recurring revenue
+              analysis and leadership-facing reporting.
+            </p>
+            <div class="project-stack"><strong>Stack:</strong> Flask, Dash, Plotly, Pandas, NumPy, OpenPyXL, Dash
+              Bootstrap Components</div>
+            <div class="tag-list">
+              <span class="tag">Analytics platform</span>
+              <span class="tag">Row-level access</span>
+              <span class="tag">Leadership reporting</span>
+            </div>
+            <div class="project-actions">
+              <a class="btn-inline btn-accent" href="revenue_dashboard_project_page.html">Case Study</a>
+              <a class="btn-inline btn-accent" href="revenue_dashboard_project_page.html#screenshots">Screenshots</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <div class="project-top">
+              <h3 class="project-title">Configurable Excel Report Distribution Engine</h3>
+              <span class="project-status">Automation</span>
+            </div>
+            <p class="project-copy">Automates segmented report generation from a master workbook.</p>
+            <p class="project-summary">
+              Internal Excel/VBA utility that generates multiple target files from one source workbook using
+              configurable rules, guided dialog-based input, naming logic, sheet handling options, and audit logging.
+              Built to reduce recurring manual effort and avoid reporting errors.
+            </p>
+            <div class="project-stack"><strong>Stack:</strong> Excel VBA</div>
+            <div class="tag-list">
+              <span class="tag">Time saving</span>
+              <span class="tag">Configurable workflow</span>
+              <span class="tag">Audit logging</span>
+            </div>
+            <div class="project-actions">
+              <a class="btn-inline btn-accent" href="excel_report_distribution_engine_project_page.html">Case Study</a>
+              <a class="btn-inline btn-accent"
+                href="excel_report_distribution_engine_project_page.html#screenshots">Screenshots</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <div class="project-top">
+              <h3 class="project-title">Diavgeia API Exploration Tool</h3>
+              <span class="project-status">API integration</span>
+            </div>
+            <p class="project-copy">Browser-based tool for querying, filtering, and aggregating public-sector data.</p>
+            <p class="project-summary">
+              Interactive UI for exploring organizations, decisions, and organizational units through the Diavgeia API.
+              Includes automatic pagination handling, date-range guidance, revoked/private-data filtering, and workflow
+              support for repeated data exploration tasks.
+            </p>
+            <div class="project-stack"><strong>Stack:</strong> HTML, JavaScript, Tailwind CSS, REST API</div>
+            <div class="tag-list">
+              <span class="tag">API exploration</span>
+              <span class="tag">Pagination logic</span>
+              <span class="tag">UI filtering</span>
+            </div>
+            <div class="project-actions">
+              <a class="btn-inline btn-accent" href="diavgeia_project_page.html">Project Overview</a>
+              <a class="btn-inline btn-accent" href="diavgeia_project_page.html#screenshots">Screenshots</a>
+            </div>
+          </article>
+        </div>
+
+        <details class="more-projects">
+          <summary>Additional Projects <span>Database design, reporting utilities, and domain-specific analysis
+              tools.</span></summary>
+          <div class="additional-projects">
+            <article class="mini-project">
+              <h4>University Course Management Database Design</h4>
+              <p>Relational schema and functional design for a university course, enrollment, grading, and attendance
+                management system.</p>
+            </article>
+            <article class="mini-project">
+              <h4>Industry Indicators / Sector Book Tool</h4>
+              <p>Controlled-distribution Excel tool for charts, industry indicators, and reusable output across
+                sector-focused proposal material.</p>
+            </article>
+            <article class="mini-project">
+              <h4>Orbis Market Analysis Automation</h4>
+              <p>Automated processing of multiple Orbis exports to generate market analysis, scenarios, and top-player
+                identification workflows.</p>
+            </article>
+            <article class="mini-project">
+              <h4>Standalone HTML Dashboard Suite</h4>
+              <p>Self-contained dashboard pages fed from standardized Excel templates for lightweight, repeatable
+                reporting without complex deployment needs.</p>
+            </article>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <p class="section-lead">
+          A business-tech hybrid profile combining structured analysis, solution design, hands-on implementation, and
+          validation across internal tools, reporting, data workflows, and process-oriented applications.
+        </p>
+
+        <div class="skills-grid skills-grid-v2">
+          <div class="card skill-block skill-block-v2">
+            <span class="card-label">Capability areas</span>
+            <h3 class="card-title">Where I add value</h3>
+
+            <div class="skill-card project-card">
+              <h4>Business &amp; solution analysis</h4>
+              <p>Requirement clarification, stakeholder communication, business logic design, process mapping, gap
+                identification, and impact-aware solution structuring.</p>
+            </div>
+
+            <div class="skill-card project-card">
+              <h4>Tool &amp; application delivery</h4>
+              <p>Internal tool design, prototyping, workflow automation, dashboard development, release-minded
+                refinement, and practical delivery for real operational use.</p>
+            </div>
+
+            <div class="skill-card project-card">
+              <h4>Validation &amp; quality checking</h4>
+              <p>Manual testing, scenario-based validation, result verification, edge-case thinking, and structured
+                checking of both what I build and what I receive for operational use.</p>
+            </div>
+          </div>
+
+          <div class="card skill-block skill-block-v2">
+            <span class="card-label">Technical toolkit</span>
+            <h3 class="card-title">Tools, systems, and technical foundations</h3>
+
+            <div class="skill-card project-card">
+              <h4>Languages &amp; development</h4>
+              <div class="skill-tags">
+                <span>Python</span>
+                <span>SQL</span>
+                <span>VBA</span>
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+              </div>
+            </div>
+
+            <div class="skill-card project-card">
+              <h4>Frameworks, data &amp; BI</h4>
+              <div class="skill-tags">
+                <span>Flask</span>
+                <span>Dash</span>
+                <span>Plotly</span>
+                <span>Pandas</span>
+                <span>NumPy</span>
+                <span>OpenPyXL</span>
+                <span>Power BI</span>
+                <span>Tableau</span>
+              </div>
+            </div>
+
+            <div class="skill-card project-card">
+              <h4>Systems, methods &amp; supporting tools</h4>
+              <div class="skill-tags">
+                <span>Spring Boot</span>
+                <span>REST APIs</span>
+                <span>JSON</span>
+                <span>XML</span>
+                <span>BPMN</span>
+                <span>DMN</span>
+                <span>UML</span>
+                <span>ServiceNow</span>
+                <span>Salesforce</span>
+                <span>Git / GitHub</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card ways-card project-card">
+          <span class="card-label">Ways of working</span>
+          <h3 class="card-title">How I typically operate</h3>
+          <div class="ways-grid">
+            <div class="way-point">Move from ambiguous requirements to structured, usable outputs.</div>
+            <div class="way-point">Combine business context, process thinking, and hands-on execution.</div>
+            <div class="way-point">Take ownership across analysis, implementation, validation, and refinement.</div>
+            <div class="way-point">Learn quickly, persist through complexity, and find workable paths forward.</div>
+          </div>
+        </div>
+
+        <div class="callout project-card">
+          <strong>Positioning note:</strong> Most relevant for roles that combine business understanding, 
+          structured problem solving, and hands-on technical delivery.
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-lead">
+          I am particularly interested in roles where business understanding, process thinking, and hands-on technical
+          execution come together — especially in teams building tools, applications, workflows, and internal platforms.
+        </p>
+
+        <div class="contact-grid">
+          <div class="card contact-panel project-card">
+            <span class="card-label">Get in touch</span>
+            <h3 class="card-title">Open to conversations around business-tech, solution, and application-oriented roles.
+            </h3>
+            <p class="muted">
+              My background combines business-facing experience, structured analysis, solution design, and self-driven
+              technical delivery. If my profile is relevant to your team or project, I would be glad to connect.
+            </p>
+
+            <ul class="contact-list">
+              <li>Email: <a href="mailto:nestoroudi.pinelopi@gmail.com"
+                  style="font-weight: bold; text-decoration: underline" ;>nestoroudi.pinelopi@gmail.com</a></li>
+              <li>LinkedIn: <a href="https://www.linkedin.com/in/pinelopi-nestoroudi-5251a0253/"
+                  style="font-weight: bold; text-decoration: underline" ; target="_blank" rel="noopener">LinkedIn</a>
+              </li>
+              <li>GitHub: <a href="https://github.com/PinelopiNestoroudi"
+                  style="font-weight: bold; text-decoration: underline" ; target="_blank" rel="noopener">GitHub</a></li>
+              <li>Location: Thessaloniki, Greece</li>
+            </ul>
+
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="mailto:nestoroudi.pinelopi@gmail.com">Send Email</a>
+              <a class="btn btn-primary" href="cv.pdf" target="_blank" rel="noopener">View CV</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2025 Pinelopi Nestoroudi · Technical Portfolio</div>
+  </footer>
+</body>
+
+</html>

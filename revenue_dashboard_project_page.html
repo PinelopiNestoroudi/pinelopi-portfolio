@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revenue Performance Dashboard — Pinelopi Nestoroudi</title>
+  <meta name="description" content="Project page for the Revenue Performance Dashboard by Pinelopi Nestoroudi." />
+  <style>
+    :root {
+      --bg: #f6fbfb;
+      --surface: #ffffff;
+      --surface-2: #eef8f7;
+      --line: #d7e8e6;
+      --line-strong: #b7d6d1;
+      --text: #11272a;
+      --muted: #4e6b70;
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --accent-soft: rgba(15, 118, 110, 0.1);
+      --shadow: 0 14px 34px rgba(17, 39, 42, 0.08);
+      --radius: 20px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 34%),
+        radial-gradient(circle at 100% 0%, rgba(17, 94, 89, 0.06), transparent 24%),
+        linear-gradient(180deg, #fbfefe 0%, var(--bg) 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(183, 214, 209, 0.72);
+      backdrop-filter: blur(12px);
+      background: rgba(246, 251, 251, 0.8);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+      color: #fff;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a {
+      padding: 8px 0;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after { transform: scaleX(1); }
+
+    .section { padding: 72px 0; }
+    .hero { padding: 52px 0 44px; }
+
+    .hero-grid,
+    .overview-grid,
+    .capability-grid,
+    .gallery-grid,
+    .outcome-grid {
+      display: grid;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.85fr); }
+    .overview-grid { grid-template-columns: 1.08fr 0.92fr; }
+    .capability-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .outcome-grid { grid-template-columns: 1fr 1fr; }
+
+    .panel,
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.04), rgba(255,255,255,0) 40%), var(--surface);
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: auto -30px -30px auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15, 118, 110, 0.12), rgba(15, 118, 110, 0) 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.1rem, 4vw, 3.7rem);
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      max-width: 11ch;
+    }
+
+    .hero-copy,
+    .section-lead,
+    .muted { color: var(--muted); }
+
+    .hero-copy {
+      max-width: 68ch;
+      font-size: 1.05rem;
+      margin: 0 0 22px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 17px;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(15, 118, 110, 0.18);
+    }
+
+    .btn-secondary { background: #fff; color: var(--text); }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .point {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px dashed var(--line-strong);
+      background: rgba(238, 248, 247, 0.7);
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .mini-card,
+    .summary-card {
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+    }
+
+    .mini-kicker,
+    .card-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .mini-kicker { margin-bottom: 8px; }
+
+    .mini-main {
+      font-size: 1.18rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-lead {
+      margin: 0 0 28px;
+      max-width: 74ch;
+      font-size: 1.02rem;
+    }
+
+    .card { padding: 24px; }
+
+    .card-label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      letter-spacing: 0.06em;
+    }
+
+    .card-title {
+      margin: 0 0 10px;
+      font-size: 1.16rem;
+      letter-spacing: -0.02em;
+    }
+
+    .bullet-list,
+    .tag-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #14b8a6, #0f766e);
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 1.35rem;
+      margin-bottom: 0.95rem;
+      line-height: 1.7;
+      color: #475569;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .stack-box,
+    .outcome-box {
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #fbfefe 100%);
+    }
+
+    .stack-title,
+    .outcome-title {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .gallery-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(20, 184, 166, 0.8), rgba(15, 118, 110, 0.45));
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: 0 18px 36px rgba(17, 39, 42, 0.1);
+    }
+
+    .gallery-card:hover::after { opacity: 1; }
+
+    .gallery-frame {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #f8fcfc;
+      margin-bottom: 14px;
+    }
+
+    .gallery-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .gallery-title {
+      margin: 0 0 6px;
+      font-size: 1.03rem;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+
+    .note-card,
+    .callout {
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(255,255,255,0.96));
+      border: 1px solid var(--line);
+    }
+
+    .callout {
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    .callout strong { color: var(--accent-strong); }
+
+    .footer {
+      padding: 18px 0 44px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    #overview,
+    #screenshots,
+    #outcome {
+      position: relative;
+    }
+
+    #overview::before,
+    #screenshots::before,
+    #outcome::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top center, rgba(20, 184, 166, 0.05), transparent 46%);
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .overview-grid,
+      .outcome-grid,
+      .gallery-grid,
+      .capability-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-points { grid-template-columns: 1fr; }
+      h1 { max-width: 100%; }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+      .hero-main,
+      .hero-side,
+      .card { padding: 22px; }
+      .section { padding: 56px 0; }
+      .hero { padding: 34px 0 28px; }
+      .cta-row { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+
+    .zoomable-image {
+      cursor: zoom-in;
+      transition: transform 0.18s ease;
+    }
+
+    .zoomable-image:hover {
+      transform: scale(1.01);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 24, 0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox img {
+      max-width: min(1200px, 92vw);
+      max-height: 90vh;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      cursor: zoom-out;
+      background: white;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      color: white;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .footer {
+      padding: 18px 0 44px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Back to portfolio">
+        <span class="brand-mark">PN</span>
+        <span>Pinelopi Nestoroudi | Revenue Performance Dashboard</span>
+      </a>
+      <nav class="nav-links" aria-label="Project navigation">
+        <a href="index.html#projects">Back to Portfolio</a>
+        <a href="#overview">Overview</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#outcome">Outcome</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="panel hero-main gallery-card">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Internal analytics platform · Role-based dashboard delivery
+          </div>
+          <h1>Revenue Performance Dashboard</h1>
+          <p class="hero-copy">
+            Internal analytics platform built for revenue performance analysis, controlled data visibility, and recurring reporting. The project consolidates multiple static Excel-based views into a single dashboard experience with filters, KPI logic, user entitlements, and leadership-facing reporting workflows.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#screenshots">View Screenshots</a>
+            <a class="btn btn-primary" href="index.html#projects">Back to Projects</a>
+          </div>
+          <div class="hero-points">
+            <div class="point gallery-card">Combines authentication, entitlement-based filtering, dashboard logic, and responsive UI in one application.</div>
+            <div class="point gallery-card">Replaces multiple static per-user Excel files with a single controlled-access dashboard experience.</div>
+            <div class="point gallery-card">Supports recurring revenue tracking through filters, KPI cards, trend views, and comparative breakdowns.</div>
+          </div>
+        </div>
+
+        <aside class="panel hero-side" aria-label="Project summary">
+          <div class="summary-card gallery-card">
+            <div class="mini-kicker">Project type</div>
+            <div class="mini-main">Internal dashboard application</div>
+            <div class="muted">Designed for controlled business use rather than public deployment.</div>
+          </div>
+          <div class="mini-card gallery-card">
+            <div class="mini-kicker">Technology stack</div>
+            <div class="mini-main">Dash · Flask · Plotly · Pandas</div>
+            <div class="muted">Also uses NumPy, OpenPyXL, and Dash Bootstrap Components in a single-page app structure.</div>
+          </div>
+          <div class="mini-card gallery-card">
+            <div class="mini-kicker">Architecture</div>
+            <div class="mini-main">Single-file app with Excel-driven access control</div>
+            <div class="muted">The dashboard is described as a Dash-based single-page app where data and entitlements are read from Excel and the UI state is managed through Dash stores.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="overview" class="section">
+      <div class="container">
+        <h2 class="section-title">Project Overview</h2>
+        <p class="section-lead">
+          This project was built as a practical internal reporting platform for revenue performance analysis. It combines role-based access control, configurable filtering, KPI calculations, and interactive charting in a single application flow rather than distributing many separate static files. The project documentation describes it as a Dash-based business dashboard using one main file, one dataset, and custom styling.
+        </p>
+
+        <div class="overview-grid">
+          <div class="card gallery-card">
+            <span class="card-label">What the dashboard does</span>
+            <h3 class="card-title">From dataset and entitlements to guided analysis</h3>
+            <ul class="bullet-list">
+              <li>Reads data from an Excel dataset and applies access control using an <code>entitlements</code> sheet. </li>
+              <li>Uses Flask-based login and user-aware filtering so the visible data depends on the signed-in user. </li>
+              <li>Provides filter groups for industry, business, growth portfolio, client class, and period.</li>
+              <li>Supports KPI cards, period-based analysis, top-client views, donut charts, sector breakdowns, and monthly trend visuals through Plotly. </li>
+              <li>Uses Dash state management to keep filter and UI state consistent across the dashboard experience.</li>
+            </ul>
+            <ul class="tag-list">
+              <li class="tag">Internal analytics</li>
+              <li class="tag">Role-based access</li>
+              <li class="tag">Dash application</li>
+              <li class="tag">Recurring reporting</li>
+            </ul>
+          </div>
+
+          <div class="card note-card gallery-card">
+            <span class="card-label">Why it matters</span>
+            <h3 class="card-title">A governed alternative to static distribution</h3>
+            <p class="muted">
+              The key value of the project is not only the visual dashboard layer. It is the combination of access-aware data delivery, reusable filtering, and analytical views that make the reporting workflow more maintainable and more useful for ongoing decision support.
+            </p>
+
+            <div class="stack-box" style="margin-top: 16px;">
+              <h4 class="stack-title">Project structure</h4>
+              <p class="muted">The dashboard documentation describes a single main application file, Excel-based data and entitlements, custom CSS, responsive layout behavior, and KPI/chart logic implemented directly in the app layer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Key Capabilities</h2>
+        <p class="section-lead">
+          The project combines business-facing usability with application logic for entitlement filtering, interactive exploration, and recurring performance monitoring.
+        </p>
+
+        <div class="capability-grid">
+          <div class="card gallery-card">
+            <span class="card-label">Access model</span>
+            <h3 class="card-title">Entitlement-based visibility</h3>
+            <p class="muted">The code defines a Flask login flow and applies row-level style filtering based on user email and permitted business or industry values, while admin users can see all data. </p>
+          </div>
+
+          <div class="card gallery-card">
+            <span class="card-label">Analytical interaction</span>
+            <h3 class="card-title">Filter-driven KPI and chart updates</h3>
+            <p class="muted">The documented patterns include toggleable filter buttons, period slider behavior, KPI calculations, Plotly charting, and state persistence for a guided analysis experience. </p>
+          </div>
+
+          <div class="card gallery-card">
+            <span class="card-label">Operational value</span>
+            <h3 class="card-title">Designed for recurring use</h3>
+            <p class="muted">The dashboard was built around repeated revenue review workflows, making it easier to inspect performance by client, industry, sector, and month without maintaining multiple separate reporting files.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="section">
+      <div class="container">
+        <h2 class="section-title">Screenshots</h2>
+        <p class="section-lead">
+          The screenshots below are presented as visual evidence of the dashboard structure and the main analytical views, based on the project flow and the screenshot names you provided.
+        </p>
+
+        <div class="gallery-grid">
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Revenue Dashboard - Filters and Performance Overview.png" alt="Revenue dashboard filters and performance overview" />
+            </div>
+            <h3 class="gallery-title">Filters and performance overview</h3>
+            <p class="gallery-copy">The main dashboard view combines the filter bar with overview KPI content so the user can move from selection to performance summary in one place.</p>
+          </article>
+
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Revenue Dashboard - Revenue Performance per month.png" alt="Revenue dashboard monthly revenue performance" />
+            </div>
+            <h3 class="gallery-title">Revenue performance per month</h3>
+            <p class="gallery-copy">Monthly trend analysis is presented as a dedicated view for tracking performance progression over time.</p>
+          </article>
+
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Revenue Dashboard - Revenue Performance per Client.png" alt="Revenue dashboard revenue performance per client" />
+            </div>
+            <h3 class="gallery-title">Revenue performance per client</h3>
+            <p class="gallery-copy">Client-level views support comparative inspection of top accounts and budget-related progress through a more focused analytical breakdown.</p>
+          </article>
+
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Revenue Dashboard - Revenue Performance per Indusrty.png" alt="Revenue dashboard revenue performance per industry" />
+            </div>
+            <h3 class="gallery-title">Revenue performance per industry</h3>
+            <p class="gallery-copy">Industry-level donut views support high-level distribution analysis and help users move from overall performance into segment-specific reading.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcome" class="section">
+      <div class="container">
+        <h2 class="section-title">Outcome and Value</h2>
+        <p class="section-lead">
+          This project shows how I approach internal application delivery: understand the reporting workflow, build controlled access into the data layer, design reusable filters, surface business-relevant KPIs, and make the output usable for repeated operational and leadership-facing analysis.
+        </p>
+
+        <div class="outcome-grid">
+          <div class="card gallery-card">
+            <span class="card-label">What this project shows</span>
+            <h3 class="card-title">Business-facing delivery with technical structure</h3>
+            <ul class="bullet-list">
+              <li>Translation of a recurring reporting problem into an internal application rather than a one-off file set.</li>
+              <li>Combination of authentication, entitlement logic, stateful filtering, and analytical charting in one workflow. </li>
+              <li>Use of Dash and Plotly to create a more flexible and user-friendly reporting experience.</li>
+              <li>Practical focus on usability, repeatability, and governed visibility for internal stakeholders.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <span class="card-label">Outcome</span>
+            <h3 class="card-title">Structured internal dashboard application</h3>
+            <div class="outcome-box gallery-card">
+              <h4 class="outcome-title">Current state</h4>
+              <p class="muted">The project is structured as a working Dash application with login, data filtering, KPI logic, and responsive UI behavior, intended for controlled internal use. </p>
+            </div>
+            <div class="outcome-box gallery-card" style="margin-top: 14px;">
+              <h4 class="outcome-title">Extension potential</h4>
+              <p class="muted">The documented patterns make it suitable for future extension through additional filters, charts, data changes, or refinements to user access logic.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 18px;">
+          <strong>Project note:</strong> Because this was built as an internal dashboard solution, it is presented here as a case study rather than a public demo. The focus is on the workflow, access logic, analytical structure, and business value without exposing internal data or company-specific context.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2025 Pinelopi Nestoroudi · Technical Portfolio</div>
+  </footer>
+
+  <div id="image-lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close image">×</button>
+    <img id="lightbox-image" src="" alt="" />
+  </div>
+
+  <script>
+    const lightbox = document.getElementById("image-lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const lightboxClose = document.getElementById("lightbox-close");
+    const zoomableImages = document.querySelectorAll(".zoomable-image");
+
+    function openLightbox(src, alt) {
+      lightboxImage.src = src;
+      lightboxImage.alt = alt || "";
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+      lightboxImage.alt = "";
+      document.body.style.overflow = "";
+    }
+
+    zoomableImages.forEach(img => {
+      img.addEventListener("click", () => {
+        openLightbox(img.src, img.alt);
+      });
+    });
+
+    lightboxClose.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxImage) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("open")) {
+        closeLightbox();
+      }
+    });
+  </script>
+</body>
+</html>

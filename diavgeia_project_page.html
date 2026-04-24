@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diavgeia API Exploration Tool — Pinelopi Nestoroudi</title>
+  <meta name="description" content="Project page for the Diavgeia API Exploration Tool by Pinelopi Nestoroudi." />
+  <style>
+    :root {
+      --bg: #f6fbfb;
+      --surface: #ffffff;
+      --surface-2: #eef8f7;
+      --line: #d7e8e6;
+      --line-strong: #b7d6d1;
+      --text: #11272a;
+      --muted: #4e6b70;
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --accent-soft: rgba(15, 118, 110, 0.1);
+      --shadow: 0 14px 34px rgba(17, 39, 42, 0.08);
+      --radius: 20px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 34%),
+        radial-gradient(circle at 100% 0%, rgba(17, 94, 89, 0.06), transparent 24%),
+        linear-gradient(180deg, #fbfefe 0%, var(--bg) 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(183, 214, 209, 0.72);
+      backdrop-filter: blur(12px);
+      background: rgba(246, 251, 251, 0.8);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+      color: #fff;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a {
+      padding: 8px 0;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after { transform: scaleX(1); }
+
+    .section { padding: 72px 0; }
+    .hero { padding: 52px 0 44px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.85fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.04), rgba(255,255,255,0) 40%),
+        var(--surface);
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: auto -30px -30px auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15, 118, 110, 0.12), rgba(15, 118, 110, 0) 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.1rem, 4vw, 3.7rem);
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      max-width: 13ch;
+    }
+
+    .hero-copy,
+    .section-lead,
+    .muted { color: var(--muted); }
+
+    .hero-copy {
+      max-width: 68ch;
+      font-size: 1.05rem;
+      margin: 0 0 22px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 17px;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(15, 118, 110, 0.18);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .point {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px dashed var(--line-strong);
+      background: rgba(238, 248, 247, 0.7);
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .mini-card,
+    .summary-card {
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+    }
+
+    .mini-kicker,
+    .card-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .mini-kicker { margin-bottom: 8px; }
+
+    .mini-main {
+      font-size: 1.18rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-lead {
+      margin: 0 0 28px;
+      max-width: 74ch;
+      font-size: 1.02rem;
+    }
+
+    .card { padding: 24px; }
+
+    .card-label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      letter-spacing: 0.06em;
+    }
+
+    .card-title {
+      margin: 0 0 10px;
+      font-size: 1.16rem;
+      letter-spacing: -0.02em;
+    }
+
+    .overview-grid,
+    .capability-grid,
+    .gallery-grid,
+    .outcome-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .overview-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: stretch;
+    }
+
+    .capability-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .outcome-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #14b8a6, #0f766e);
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+    }
+
+    .stack-box,
+    .outcome-box {
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #fbfefe 100%);
+    }
+
+    .stack-title,
+    .outcome-title {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .gallery-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(20, 184, 166, 0.8), rgba(15, 118, 110, 0.45));
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: 0 18px 36px rgba(17, 39, 42, 0.1);
+    }
+
+    .gallery-card:hover::after { opacity: 1; }
+
+    .gallery-frame {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #f8fcfc;
+      margin-bottom: 14px;
+    }
+
+    .gallery-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .gallery-title {
+      margin: 0 0 6px;
+      font-size: 1.03rem;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+
+    .note-card,
+    .callout {
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(255,255,255,0.96));
+      border: 1px solid var(--line);
+    }
+
+    .callout {
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    .callout strong { color: var(--accent-strong); }
+
+    .footer {
+      padding: 18px 0 44px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    #overview,
+    #screenshots,
+    #outcome {
+      position: relative;
+    }
+
+    #overview::before,
+    #screenshots::before,
+    #outcome::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top center, rgba(20, 184, 166, 0.05), transparent 46%);
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .overview-grid,
+      .outcome-grid,
+      .gallery-grid,
+      .capability-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-points { grid-template-columns: 1fr; }
+      h1 { max-width: 100%; }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .hero-main,
+      .hero-side,
+      .card {
+        padding: 22px;
+      }
+
+      .section { padding: 56px 0; }
+      .hero { padding: 34px 0 28px; }
+      .cta-row { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+
+    .zoomable-image {
+      cursor: zoom-in;
+      transition: transform 0.18s ease;
+    }
+
+    .zoomable-image:hover {
+      transform: scale(1.01);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 24, 0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox img {
+      max-width: min(1200px, 92vw);
+      max-height: 90vh;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      cursor: zoom-out;
+      background: white;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      color: white;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .footer {
+      padding: 18px 0 44px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Back to portfolio">
+        <span class="brand-mark">PN</span>
+        <span>Pinelopi Nestoroudi | Diavgeia API Exploration Tool</span>
+      </a>
+      <nav class="nav-links" aria-label="Project navigation">
+        <a href="index.html#projects">Back to Portfolio</a>
+        <a href="#overview">Overview</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#outcome">Outcome</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="panel hero-main gallery-card">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            API integration · Browser-based data exploration
+          </div>
+          <h1>Diavgeia API Exploration Tool</h1>
+          <p class="hero-copy">
+            Browser-based tool for querying, filtering, and aggregating public-sector data through the Diavgeia API. The project was built to make repeated exploration tasks more usable through a single interface for organizations, decisions, and organizational units, with support for pagination handling, date-window guidance, and UI-side filtering logic.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#screenshots">View Screenshots</a>
+            <a class="btn btn-primary" href="#overview">Project Overview</a>
+            <a class="btn btn-primary" href="index.html#projects">Back to Projects</a>
+          </div>
+          <div class="hero-points">
+            <div class="point gallery-card">Explores organizations, decisions, and organizational units through one guided browser UI.</div>
+            <div class="point gallery-card">Handles paginated API responses, date constraints, and revoked/private-data filtering logic.</div>
+            <div class="point gallery-card">Built as a lightweight exploration tool with clear room for backend-based evolution.</div>
+          </div>
+        </div>
+
+        <aside class="panel hero-side " aria-label="Project summary">
+          <div class="summary-card gallery-card">
+            <div class="mini-kicker">Project type</div>
+            <div class="mini-main">API exploration tool</div>
+            <div class="muted">Focused on usability, repeated query workflows, and practical access to public-sector data.</div>
+          </div>
+          <div class="mini-card gallery-card">
+            <div class="mini-kicker">Technology stack</div>
+            <div class="mini-main">HTML · JavaScript · Tailwind CSS</div>
+            <div class="muted">Client-side interaction backed by direct API calls and browser-side processing.</div>
+          </div>
+          <div class="mini-card gallery-card">
+            <div class="mini-kicker">Implementation note</div>
+            <div class="mini-main">Client-side prototype</div>
+            <div class="muted">Useful for exploration and demonstration, with clear potential for a future backend version.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="overview" class="section">
+      <div class="container">
+        <h2 class="section-title">Project Overview</h2>
+        <p class="section-lead">
+          The tool was built to turn raw API documentation and repeated manual querying into a more structured exploration workflow. Instead of making one-off calls and manually tracking parameters, the interface groups the main use cases into dedicated views and adds logic to make public-sector data retrieval more practical.
+        </p>
+
+        <div class="overview-grid">
+          <div class="card gallery-card">
+            <span class="card-label">What the tool does</span>
+            <h3 class="card-title">Three focused exploration workflows</h3>
+            <ul class="bullet-list">
+              <li>Loads and displays organizations, including a narrower university-focused view.</li>
+              <li>Queries decisions for a selected organization and date window, with support for repeated exploration across periods.</li>
+              <li>Retrieves active organizational units for a selected organization and presents them in a usable table view.</li>
+              <li>Uses browser-side logic to loop through paginated responses and collect complete result sets where needed.</li>
+              <li>Adds UI-side filtering for cases where the API does not provide the desired filtering directly.</li>
+            </ul>
+            <ul class="tag-list">
+              <li class="tag">API querying</li>
+              <li class="tag">Pagination handling</li>
+              <li class="tag">UI filtering</li>
+              <li class="tag">Public data exploration</li>
+            </ul>
+          </div>
+
+          <div class="card note-card gallery-card">
+            <span class="card-label">Why it matters</span>
+            <h3 class="card-title">A usability layer over raw API access</h3>
+            <p class="muted">
+              The value of the project is not just the API call itself, but the surrounding logic: helping the user choose valid date ranges, move to the next period quickly, inspect revoked decisions, identify private-data cases, and retrieve organizational unit information without manually reconstructing calls every time.
+            </p>
+
+            <div class="stack-box" style="margin-top: 16px;">
+              <h4 class="stack-title">Practical focus</h4>
+              <p class="muted">This project shows applied API documentation reading, query construction, UI logic, and browser-side orchestration for a real public-data use case.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Key Capabilities</h2>
+        <p class="section-lead">
+          The project groups related tasks into guided tabs and adds lightweight validation and automation so users can focus on exploration rather than reconstructing the request logic manually.
+        </p>
+
+        <div class="capability-grid">
+          <div class="card gallery-card">
+            <span class="card-label">Organizations</span>
+            <h3 class="card-title">General and university views</h3>
+            <p class="muted">The organizations section retrieves all available organizations and also provides a narrower university-focused view, making the dataset easier to explore for the intended use case.</p>
+          </div>
+
+          <div class="card gallery-card">
+            <span class="card-label">Decisions</span>
+            <h3 class="card-title">Date-aware query workflow</h3>
+            <p class="muted">The decisions section lets the user query by organization and date range, count all decisions, isolate revoked decisions, and detect cases involving private data through UI-side filtering.</p>
+          </div>
+
+          <div class="card gallery-card">
+            <span class="card-label">Units</span>
+            <h3 class="card-title">Organizational structure inspection</h3>
+            <p class="muted">The organizational-units section retrieves active units for a selected organization and presents the result in a clean, usable table with identifiers and parent relationships.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="section">
+      <div class="container">
+        <h2 class="section-title">Screenshots</h2>
+        <p class="section-lead">
+          These screenshots show the three main user-facing views of the tool: organizations, decisions, and organizational units.
+        </p>
+
+        <div class="gallery-grid">
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Diavgeia-Dierevnisi Organismon - Emfanisi Panepistimion.png" alt="Diavgeia organizations view" />
+            </div>
+            <h3 class="gallery-title">Organization exploration</h3>
+            <p class="gallery-copy">The organizations view loads available institutions and supports a narrower university-focused listing for easier inspection.</p>
+          </article>
+
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Diavgeia - DIerevnisi Prakseon.png" alt="Diavgeia decisions view" />
+            </div>
+            <h3 class="gallery-title">Decision exploration</h3>
+            <p class="gallery-copy">The decisions view supports organization-based querying, date range input, revoked/private-data filtering, and period-by-period exploration.</p>
+          </article>
+
+          <article class="card gallery-card">
+            <div class="gallery-frame">
+              <img class="zoomable-image" src="Diavgeia - Dierevnisi Monadon.png" alt="Diavgeia organizational units view" />
+            </div>
+            <h3 class="gallery-title">Organizational units</h3>
+            <p class="gallery-copy">The units view retrieves active organizational units for a selected organization and displays them in a usable table with identifiers and hierarchy hints.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcome" class="section">
+      <div class="container">
+        <h2 class="section-title">Implementation Notes and Outcome</h2>
+        <p class="section-lead">
+          The project is intentionally lightweight and browser-based, which made it practical to build and demonstrate, while also revealing where a fuller backend implementation would add performance, control, and extensibility.
+        </p>
+
+        <div class="outcome-grid">
+          <div class="card gallery-card">
+            <span class="card-label">What this project shows</span>
+            <h3 class="card-title">Applied API logic with user-facing structure</h3>
+            <ul class="bullet-list">
+              <li>Reading API documentation and turning constraints into usable interface behavior.</li>
+              <li>Handling paginated results instead of limiting the output to one response page.</li>
+              <li>Adding UI logic where the API does not directly support the desired filter.</li>
+              <li>Designing a lightweight browser interface around repeated public-data exploration tasks.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <span class="card-label">Implementation notes</span>
+            <h3 class="card-title">Useful prototype with clear backend potential</h3>
+            <div class="outcome-box gallery-card">
+              <h4 class="outcome-title">Current approach</h4>
+              <p class="muted">The implementation is client-side and relies on browser-side processing for calls, aggregation, and filtering. It demonstrates the logic clearly, but is still prototype-oriented.</p>
+            </div>
+            <div class="outcome-box gallery-card" style="margin-top: 14px;">
+              <h4 class="outcome-title">Future evolution</h4>
+              <p class="muted">A backend version could improve performance, reduce browser constraints, and support a more robust and scalable exploration experience.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 18px;">
+          <strong>Project note:</strong> The project brings together public-data exploration, API-related constraints, and usability logic designed to make repeated queries easier to manage.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2025 Pinelopi Nestoroudi · Technical Portfolio</div>
+  </footer>
+
+  <div id="image-lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close image">×</button>
+    <img id="lightbox-image" src="" alt="" />
+  </div>
+
+  <script>
+    const lightbox = document.getElementById("image-lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const lightboxClose = document.getElementById("lightbox-close");
+    const zoomableImages = document.querySelectorAll(".zoomable-image");
+
+    function openLightbox(src, alt) {
+      lightboxImage.src = src;
+      lightboxImage.alt = alt || "";
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+      lightboxImage.alt = "";
+      document.body.style.overflow = "";
+    }
+
+    zoomableImages.forEach(img => {
+      img.addEventListener("click", () => {
+        openLightbox(img.src, img.alt);
+      });
+    });
+
+    lightboxClose.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxImage) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("open")) {
+        closeLightbox();
+      }
+    });
+  </script>
+
+</body>
+</html>
